@@ -1,7 +1,39 @@
-<html layout:decorate="~{layouts/master.html}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html layout:decorate="~{layouts/master.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
 <section layout:fragment="content">
-    <div>
-        create
+    <div class="container">
+        <form action="" method="post">
+            <div class="form-row mt-30">
+                <div class="form-group form-material col-md-12 pr-30">
+                    <label>Chọn Phim <span class="required text-danger">*</span></label>
+                    <select class="form-control form-control-lg">
+                        <option>Large select</option>
+                        <option th:each="item : ${film}" th:value="${item.id}">[[${item.name}]]</option>
+                    </select>
+                </div>
+                <div class="form-group form-material col-md-12 pr-30">
+                    <label>Chọn thời gian và giá <span class="required text-danger">*</span></label>
+                    <select class="form-control form-control-lg">
+                        <option>Large select</option>
+                        <option th:each="item : ${timePrice}" th:value="${item.id}">[[${item.time}]]-[[${item.price}]]</option>
+                    </select>
+                </div>
+                <div class="form-group form-material col-md-12 pr-30">
+                    <label>Chọn phòng chiếu <span class="required text-danger">*</span></label>
+                    <select class="form-control form-control-lg">
+                        <option>Large select</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Thêm lịch chiếu</button>
+            </div>
+        </form>
     </div>
 </section>
 </html>
+<script>
+    $( document ).ready(function() {
+        console.log( "ready!" );
+    });
+</script>
