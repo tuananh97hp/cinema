@@ -8,6 +8,9 @@ import javax.validation.constraints.*;
 @Table(name = "gifts")
 public class Gift {
 
+    public Gift() {
+    }
+
     public Gift(Ticket ticket, Food food, int point) {
         this.ticket = ticket;
         this.food = food;

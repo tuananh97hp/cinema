@@ -7,6 +7,9 @@ import javax.validation.constraints.*;
 @Table(name = "foods")
 public class Food {
 
+    public Food() {
+    }
+
     public Food(String name, float price) {
         this.name = name;
         this.price = price;

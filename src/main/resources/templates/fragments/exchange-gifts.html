@@ -28,7 +28,7 @@
                     <td th:unless="${memberCard.getCustomer()}"></td>
                     <td>[[${memberCard.point}]]</td>
                     <td>
-                        <a href="" class="btn btn-outline-success">Đổi quà</a>
+                        <a th:href="@{'/exchange-gift/' + ${memberCard.id}}" class="btn btn-outline-success">Đổi quà</a>
                     </td>
                 </tr>
                 </tbody>

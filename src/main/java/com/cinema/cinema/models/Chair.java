@@ -7,6 +7,9 @@ import javax.validation.constraints.*;
 @Table(name = "chairs")
 public class Chair {
 
+    public Chair() {
+    }
+
     public Chair(String number, Room room) {
         this.number = number;
         this.room = room;

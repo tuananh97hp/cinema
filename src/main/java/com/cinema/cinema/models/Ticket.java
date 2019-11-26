@@ -7,6 +7,9 @@ import javax.validation.constraints.*;
 @Table(name = "tickets")
 public class Ticket {
 
+    public Ticket() {
+    }
+
     public Ticket(Showtime showtime, Chair chair) {
         this.showtime = showtime;
         this.chair = chair;

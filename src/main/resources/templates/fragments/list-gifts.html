@@ -1,0 +1,40 @@
+<html layout:decorate="~{layouts/master.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://java.sun.com/xml/ns/persistence/orm">
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row mb-4">
+            <form class="form-inline" th:action="@{'/exchange-gift/' + ${memberCard.id}}" method="get">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="gift_search" placeholder="Nhập mã thẻ thành viên" th:value="${giftSearch}">
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Tìm kiếm</button>
+            </form>
+        </div>
+
+        <div class="row">
+            <table th:if="${gifts}" class="table table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên món quà</th>
+                    <th>Số điểm</th>
+                    <th>Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="gift : ${gifts}">
+                    <th scope="row">[[${gift.id}]]</th>
+                    <td th:if="${gift.ticket}">[[${gift.ticket?.showtime?.film?.name}]]</td>
+                    <td th:if="${gift.food}">[[${gift.food.name}]]</td>
+                    <td>[[${gift.point}]]</td>
+                    <td>
+                        <a th:href="@{'/exchange-gift/' + ${memberCard.id} + '/' + ${gift.id}}" class="btn btn-outline-success">Đổi quà</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="text-danger" th:if="${gifts.size() == 0}">Không tìm thấy món quà nào</p>
+        </div>
+    </div>
+</section>
+</html>
