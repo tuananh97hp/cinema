@@ -7,6 +7,9 @@ import javax.validation.constraints.*;
 @Table(name = "addresses")
 public class Address {
 
+    public Address() {
+    }
+
     public Address(int homeNumber, String street, String city) {
         this.homeNumber = homeNumber;
         this.street = street;

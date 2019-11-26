@@ -6,7 +6,10 @@ import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "customers")
-public class Customer extends Person{
+public class Customer extends Person {
+
+    public Customer() {
+    }
 
     public Customer(String name, Address address, MembershipCard membershipCard) {
         super(name, address);

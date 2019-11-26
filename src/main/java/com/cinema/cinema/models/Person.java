@@ -8,6 +8,9 @@ import javax.validation.constraints.*;
 
 public class Person {
 
+    public Person() {
+    }
+
     public Person(String name, Address address) {
         this.name = name;
         this.address = address;
