@@ -1,13 +1,15 @@
 package com.cinema.cinema.models;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table(name = "films")
-public class Film {
+@Table(name = "foods")
+public class Food {
 
-    public Film(@NotNull String name) {
+    public Food(String name, float price) {
         this.name = name;
+        this.price = price;
     }
 
     @Id
@@ -16,8 +18,10 @@ public class Film {
     private int id;
 
     @Column(name = "name")
-    @NotNull
     private String name;
+
+    @Column(name = "price")
+    private float price;
 
     public int getId() {
         return id;
@@ -33,5 +37,13 @@ public class Film {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 }
