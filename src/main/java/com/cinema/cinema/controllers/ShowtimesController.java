@@ -42,7 +42,7 @@ public class ShowtimesController{
         List<Film> films = (List<Film>) filmRepository.findAll();
         List<TimePrice> timePrices = (List<TimePrice>) timePriceRepository.findAll();
         model.addAttribute("film", films);
-        model.addAttribute("time-price", timePrices);
+        model.addAttribute("timePrice", timePrices);
         return "fragments/show-time-create";
     }
 
