@@ -3,7 +3,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table(name = "time_price")
+@Table(name = "time_prices")
 public class TimePrice {
 
     public TimePrice(String time, float price) {

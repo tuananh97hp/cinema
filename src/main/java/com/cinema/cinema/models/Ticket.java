@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table(name = "foods")
+@Table(name = "tickets")
 public class Ticket {
 
     public Ticket(Showtime showtime, Chair chair) {

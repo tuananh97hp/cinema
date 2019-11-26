@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table(name = "manages")
+@Table(name = "addresses")
 public class Address {
 
     public Address(int homeNumber, String street, String city) {
