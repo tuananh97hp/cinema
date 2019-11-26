@@ -6,6 +6,8 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "rooms")
 public class Room {
+    public Room() {
+    }
 
     public Room(int roomNumber) {
         this.roomNumber = roomNumber;

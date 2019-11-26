@@ -5,6 +5,8 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "time_prices")
 public class TimePrice {
+    public TimePrice() {
+    }
 
     public TimePrice(String time, float price) {
         this.time = time;

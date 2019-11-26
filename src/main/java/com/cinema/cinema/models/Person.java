@@ -5,7 +5,6 @@ import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "people")
-
 public class Person {
 
     public Person() {

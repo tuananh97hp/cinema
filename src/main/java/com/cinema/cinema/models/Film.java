@@ -5,6 +5,8 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "films")
 public class Film {
+    public Film() {
+    }
 
     public Film(@NotNull String name) {
         this.name = name;

@@ -8,6 +8,8 @@ import javax.validation.constraints.*;
 @Table(name = "show_times")
 public class Showtime {
 
+    public Showtime(){}
+
     public Showtime(Room room, Film film, TimePrice timePrice) {
         this.room = room;
         this.film = film;

@@ -19,6 +19,7 @@ public class Employee extends Person {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @NotEmpty
     private Account account;
 
     @Column(name = "type", columnDefinition = "integer default 0")
