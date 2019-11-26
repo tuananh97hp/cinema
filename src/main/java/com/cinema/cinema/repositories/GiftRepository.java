@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface GiftRepository extends JpaRepository<Gift, Integer> {
 
-    List<Gift> findGiftByFoodNameContainingOrTicketShowtimeFilmNameContainingAndPointIsLessThan(String foodName, String filmName, int cardPoint);
+    List<Gift> findGiftByFoodNameContainingAndPointIsLessThanOrTicketShowtimeFilmNameContainingAndPointIsLessThan(String foodName, int cardPoint1, String filmName, int cardPoint2);
 }

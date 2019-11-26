@@ -5,7 +5,7 @@
         <div class="row mb-4">
             <form class="form-inline" th:action="@{'/exchange-gift/' + ${memberCard.id}}" method="get">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="gift_search" placeholder="Nhập mã thẻ thành viên" th:value="${giftSearch}">
+                    <input type="text" class="form-control" name="gift_search" placeholder="Nhập tên món quà" th:value="${giftSearch}">
                 </div>
                 <button type="submit" class="btn btn-outline-primary">Tìm kiếm</button>
             </form>

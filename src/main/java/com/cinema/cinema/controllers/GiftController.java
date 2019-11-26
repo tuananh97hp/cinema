@@ -64,8 +64,9 @@ public class GiftController {
             membershipCard = optionalMembershipCard.get();
         }
 
-        List<Gift> gifts = giftRepository.findGiftByFoodNameContainingOrTicketShowtimeFilmNameContainingAndPointIsLessThan(
+        List<Gift> gifts = giftRepository.findGiftByFoodNameContainingAndPointIsLessThanOrTicketShowtimeFilmNameContainingAndPointIsLessThan(
                 giftSearch,
+                membershipCard != null ? membershipCard.getPoint() : 0,
                 giftSearch,
                 membershipCard != null ? membershipCard.getPoint() : 0);
         model.addAttribute("gifts", gifts);
