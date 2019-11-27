@@ -2,25 +2,25 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <section layout:fragment="content">
     <div class="container">
-        <form action="" method="post">
+        <form action="/show-times/store"  method="post">
             <div class="form-row mt-30">
                 <div class="form-group form-material col-md-12 pr-30">
                     <label>Chọn Phim <span class="required text-danger">*</span></label>
-                    <select class="form-control form-control-lg">
+                    <select name="film_id" class="form-control form-control-lg" id="film">
                         <option>Large select</option>
                         <option th:each="item : ${film}" th:value="${item.id}">[[${item.name}]]</option>
                     </select>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
                     <label>Chọn thời gian và giá <span class="required text-danger">*</span></label>
-                    <select class="form-control form-control-lg">
+                    <select name="time_price_id" class="form-control form-control-lg" id="time-price">
                         <option>Large select</option>
                         <option th:each="item : ${timePrice}" th:value="${item.id}">[[${item.time}]]-[[${item.price}]]</option>
                     </select>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
                     <label>Chọn phòng chiếu <span class="required text-danger">*</span></label>
-                    <select class="form-control form-control-lg">
+                    <select name="room_id" class="form-control form-control-lg" id="room">
                         <option>Large select</option>
                     </select>
                 </div>
@@ -34,6 +34,22 @@
 </html>
 <script>
     $( document ).ready(function() {
-        console.log( "ready!" );
+        $('#time-price').change(function(){
+            console.log($(this).val());
+            $("#room").empty().append('<option>Large select</option>')
+            $.ajax({
+                url: "/rooms",
+                method: "GET",
+                data: {
+                    time_price_id:  $(this).val(),
+                }
+            }).done(function(res) {
+                console.log(res)
+                for (var i in res) {
+                    var obj = res[i];
+                    $("#room").append("<option value=\"" + obj.id + "\">" + obj.roomNumber + "</option>");
+                }
+            });
+        })
     });
 </script>

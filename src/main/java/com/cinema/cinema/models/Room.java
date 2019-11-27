@@ -1,7 +1,8 @@
 package com.cinema.cinema.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "rooms")
@@ -9,7 +10,8 @@ public class Room {
     public Room() {
     }
 
-    public Room(int roomNumber) {
+    public Room(List<Showtime> showtimes, int roomNumber) {
+        this.showtimes = showtimes;
         this.roomNumber = roomNumber;
     }
 
@@ -17,6 +19,9 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+    private List<Showtime> showtimes;
 
     @Column(name = "room_number")
     private int roomNumber;
