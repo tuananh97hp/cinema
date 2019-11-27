@@ -108,7 +108,6 @@ public class GiftController {
 
         model.addAttribute("gift", gift);
         model.addAttribute("memberCard", membershipCard);
-        model.addAttribute("point", (membershipCard != null && gift != null) ? membershipCard.getPoint() - gift.getPoint() : 0);
 
         return "fragments/gift-bill";
     }
