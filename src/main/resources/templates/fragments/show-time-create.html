@@ -7,21 +7,21 @@
                 <div class="form-group form-material col-md-12 pr-30">
                     <label>Chọn Phim <span class="required text-danger">*</span></label>
                     <select name="film_id" class="form-control form-control-lg" id="film">
-                        <option>Large select</option>
+                        <option>Chọn phim</option>
                         <option th:each="item : ${film}" th:value="${item.id}">[[${item.name}]]</option>
                     </select>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
                     <label>Chọn thời gian và giá <span class="required text-danger">*</span></label>
                     <select name="time_price_id" class="form-control form-control-lg" id="time-price">
-                        <option>Large select</option>
+                        <option>Chọn thời gian và giá</option>
                         <option th:each="item : ${timePrice}" th:value="${item.id}">[[${item.time}]]-[[${item.price}]]</option>
                     </select>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
                     <label>Chọn phòng chiếu <span class="required text-danger">*</span></label>
                     <select name="room_id" class="form-control form-control-lg" id="room">
-                        <option>Large select</option>
+                        <option>Chọn phòng chiếu</option>
                     </select>
                 </div>
             </div>
@@ -36,7 +36,7 @@
     $( document ).ready(function() {
         $('#time-price').change(function(){
             console.log($(this).val());
-            $("#room").empty().append('<option>Large select</option>')
+            $("#room").empty().append('<option>Chọn phòng chiếu</option>')
             $.ajax({
                 url: "/rooms",
                 method: "GET",

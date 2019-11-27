@@ -40,7 +40,13 @@ public class RoomController {
         for (Room room : roomListIn) {
             room_ids.add(room.getId());
         }
-        List<Room> roomList = roomRepository.findRoomByIdNotIn(room_ids);
+        List<Room> roomList;
+        if (room_ids.size() == 0) {
+            roomList = (List<Room>) roomRepository.findAll();
+        } else {
+            roomList = roomRepository.findRoomByIdNotIn(room_ids);
+        }
+
         return ResponseEntity.ok(roomList);
     }
 }
