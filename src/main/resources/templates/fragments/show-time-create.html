@@ -2,26 +2,29 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <section layout:fragment="content">
     <div class="container">
-        <form action="/show-times/store"  method="post">
+        <div class="error">
+            <p class="text-danger" th:if="${error}">[[${error}]]</p>
+        </div>
+        <form action="/show-times/store"  method="post" th:object="${showTime}">
             <div class="form-row mt-30">
                 <div class="form-group form-material col-md-12 pr-30">
                     <label>Chọn Phim <span class="required text-danger">*</span></label>
-                    <select name="film_id" class="form-control form-control-lg" id="film">
-                        <option>Chọn phim</option>
+                    <select th:field="*{film}" class="form-control form-control-lg" id="film">
+                        <option value="">Chọn phim</option>
                         <option th:each="item : ${film}" th:value="${item.id}">[[${item.name}]]</option>
                     </select>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
                     <label>Chọn thời gian và giá <span class="required text-danger">*</span></label>
-                    <select name="time_price_id" class="form-control form-control-lg" id="time-price">
-                        <option>Chọn thời gian và giá</option>
+                    <select th:field="*{timePrice}" class="form-control form-control-lg" id="time-price">
+                        <option value="">Chọn thời gian và giá</option>
                         <option th:each="item : ${timePrice}" th:value="${item.id}">[[${item.time}]]-[[${item.price}]]</option>
                     </select>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
                     <label>Chọn phòng chiếu <span class="required text-danger">*</span></label>
-                    <select name="room_id" class="form-control form-control-lg" id="room">
-                        <option>Chọn phòng chiếu</option>
+                    <select th:field="*{room}" class="form-control form-control-lg" id="room">
+                        <option value="">Chọn phòng chiếu</option>
                     </select>
                 </div>
             </div>

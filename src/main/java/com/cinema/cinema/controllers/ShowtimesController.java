@@ -48,24 +48,16 @@ public class ShowtimesController {
         List<TimePrice> timePrices = (List<TimePrice>) timePriceRepository.findAll();
         model.addAttribute("film", films);
         model.addAttribute("timePrice", timePrices);
+        model.addAttribute("showTime", new Showtime());
         return "fragments/show-time-create";
     }
 
     @PostMapping("/show-times/store")
-    public String store(@RequestParam(name = "film_id", required = false, defaultValue = "0") String filmid,
-                        @RequestParam(name = "time_price_id", required = false, defaultValue = "0") String timepriceid,
-                        @RequestParam(name = "room_id", required = false, defaultValue = "0") String roomid, Model model) {
-        int film_id = Integer.parseInt(filmid);
-        int time_price_id = Integer.parseInt(timepriceid);
-        int room_id = Integer.parseInt(roomid);
-        if (film_id == 0 || time_price_id == 0 || room_id == 0) {
-            model.addAttribute("error", "chon cac gia tri");
+    public String store(@Valid Showtime showtime, BindingResult result,  Model model) {
+        if (result.hasErrors()) {
             return "fragments/show-time-create";
         }
-        Film film = filmRepository.findById(film_id).get();
-        Room room = roomRepository.findById(room_id).get();
-        TimePrice timePrice = timePriceRepository.findById(time_price_id).get();
-        showTimeRepository.save(new Showtime(room, film, timePrice));
+        showTimeRepository.save(showtime);
         return "redirect:/show-times";
     }
 
