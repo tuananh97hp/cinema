@@ -3,6 +3,7 @@ package com.cinema.cinema.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "show_times")
@@ -21,8 +22,7 @@ public class Showtime {
     @Column(name = "id")
     private int id;
 
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
