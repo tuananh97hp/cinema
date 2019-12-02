@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ShowTimeRepository extends CrudRepository<Showtime, Integer> {
     List<Showtime> findAllByTimePriceId(Integer id);
+    List<Showtime> findAllByRoomId(Integer id);
 }

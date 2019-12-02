@@ -3,7 +3,6 @@ package com.cinema.cinema.controllers;
 import com.cinema.cinema.models.Film;
 import com.cinema.cinema.models.Room;
 import com.cinema.cinema.models.Showtime;
-import com.cinema.cinema.models.TimePrice;
 import com.cinema.cinema.repositories.FilmRepository;
 import com.cinema.cinema.repositories.RoomRepository;
 import com.cinema.cinema.repositories.ShowTimeRepository;
@@ -14,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -45,16 +42,17 @@ public class ShowtimesController {
     @GetMapping("/show-times/create")
     public String create(Model model) {
         List<Film> films = (List<Film>) filmRepository.findAll();
-        List<TimePrice> timePrices = (List<TimePrice>) timePriceRepository.findAll();
-        model.addAttribute("film", films);
-        model.addAttribute("timePrice", timePrices);
+        List<Room> rooms = (List<Room>) roomRepository.findAll();
+        model.addAttribute("films", films);
+        model.addAttribute("rooms", rooms);
         model.addAttribute("showTime", new Showtime());
         return "fragments/show-time-create";
     }
 
-    @PostMapping("/show-times/store")
+    @PostMapping("/show-times/create")
     public String store(@Valid Showtime showtime, BindingResult result,  Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("showTime", showtime);
             return "fragments/show-time-create";
         }
         showTimeRepository.save(showtime);

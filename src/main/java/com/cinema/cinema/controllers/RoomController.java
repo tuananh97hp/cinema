@@ -19,34 +19,4 @@ import java.util.List;
 @Controller
 public class RoomController {
 
-
-    @Autowired
-    private ShowTimeRepository showTimeRepository;
-
-    @Autowired
-    private RoomRepository roomRepository;
-
-    @Autowired
-    private FilmRepository filmRepository;
-
-    @Autowired
-    private TimePriceRepository timePriceRepository;
-
-    @GetMapping("/rooms")
-    public ResponseEntity<?> index(@RequestParam(name = "time_price_id", required = false, defaultValue = "0") int timePriceId, Model model) {
-        List<Showtime> showtimes = showTimeRepository.findAllByTimePriceId(timePriceId);
-        List<Room> roomListIn = roomRepository.findAllByShowtimesIn(showtimes);
-        List<Integer> room_ids = new LinkedList<>();
-        for (Room room : roomListIn) {
-            room_ids.add(room.getId());
-        }
-        List<Room> roomList;
-        if (room_ids.size() == 0) {
-            roomList = (List<Room>) roomRepository.findAll();
-        } else {
-            roomList = roomRepository.findRoomByIdNotIn(room_ids);
-        }
-
-        return ResponseEntity.ok(roomList);
-    }
 }

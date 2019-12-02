@@ -22,15 +22,18 @@ public class Showtime {
     @Column(name = "id")
     private int id;
 
+    @NotNull(message = "Bạn chưa chọn phóng chiếu")
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @NotNull(message = "Bạn chưa chọn phim")
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "film_id", referencedColumnName = "id")
     private Film film;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @NotNull(message = "Bạn chưa chọn thời gian và giá")
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "time_price_id", referencedColumnName = "id")
     private TimePrice timePrice;
 

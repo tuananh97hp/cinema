@@ -1,6 +1,8 @@
 package com.cinema.cinema.models;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table(name = "time_prices")
@@ -8,7 +10,7 @@ public class TimePrice {
     public TimePrice() {
     }
 
-    public TimePrice(String time, float price) {
+    public TimePrice(LocalTime time, float price) {
         this.time = time;
         this.price = price;
     }
@@ -18,8 +20,11 @@ public class TimePrice {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "time")
-    private String time;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "timePrice")
+    private List<Showtime> showtimes;
+
+    @Column(name = "time", columnDefinition = "TIME")
+    private LocalTime time;
 
     @Column(name = "price", columnDefinition = "double default 0")
     private float price;
@@ -32,11 +37,11 @@ public class TimePrice {
         this.id = id;
     }
 
-    public String getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
