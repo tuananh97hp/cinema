@@ -45,14 +45,17 @@ public class ShowtimesController {
         List<Room> rooms = (List<Room>) roomRepository.findAll();
         model.addAttribute("films", films);
         model.addAttribute("rooms", rooms);
-        model.addAttribute("showTime", new Showtime());
+        model.addAttribute("showtime", new Showtime());
         return "fragments/show-time-create";
     }
 
     @PostMapping("/show-times/create")
     public String store(@Valid Showtime showtime, BindingResult result,  Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("showTime", showtime);
+            List<Film> films = (List<Film>) filmRepository.findAll();
+            List<Room> rooms = (List<Room>) roomRepository.findAll();
+            model.addAttribute("films", films);
+            model.addAttribute("rooms", rooms);
             return "fragments/show-time-create";
         }
         showTimeRepository.save(showtime);
