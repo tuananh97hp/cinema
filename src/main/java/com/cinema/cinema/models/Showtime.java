@@ -3,6 +3,7 @@ package com.cinema.cinema.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Date;
 import java.util.Optional;
 
 @Entity
@@ -11,10 +12,11 @@ public class Showtime {
 
     public Showtime(){}
 
-    public Showtime(Room room, Film film, TimePrice timePrice) {
+    public Showtime(Room room, Film film, TimePrice timePrice, String date) {
         this.room = room;
         this.film = film;
         this.timePrice = timePrice;
+        this.date = date;
     }
 
     @Id
@@ -36,6 +38,10 @@ public class Showtime {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "time_price_id", referencedColumnName = "id")
     private TimePrice timePrice;
+
+    @NotEmpty(message = "Bạn chưa chọn ngày chiếu")
+    @Column(name = "date",columnDefinition = "DATE")
+    private String date;
 
     public int getId() {
         return id;
@@ -67,5 +73,13 @@ public class Showtime {
 
     public void setTimePrice(TimePrice timePrice) {
         this.timePrice = timePrice;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
