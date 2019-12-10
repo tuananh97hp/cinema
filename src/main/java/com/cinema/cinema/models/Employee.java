@@ -6,6 +6,9 @@ import javax.validation.constraints.*;
 @Table(name = "employees")
 public class Employee extends Person {
 
+    public Employee() {
+
+    }
     public Employee(String name, Address address, Account account, int type) {
         super(name, address);
         this.account = account;
