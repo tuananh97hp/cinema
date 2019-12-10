@@ -2,27 +2,45 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <section layout:fragment="content">
     <div class="container">
-        <form action="/show-times/store"  method="post">
+        <div class="text-center">
+            <h1>Thêm lịch chiếu</h1>
+        </div>
+        <div class="error">
+            <p class="text-danger" th:if="${error}">[[${error}]]</p>
+        </div>
+        <form action="/show-times/create" method="post" th:object="${showtime}">
             <div class="form-row mt-30">
                 <div class="form-group form-material col-md-12 pr-30">
-                    <label>Chọn Phim <span class="required text-danger">*</span></label>
-                    <select name="film_id" class="form-control form-control-lg" id="film">
-                        <option>Chọn phim</option>
-                        <option th:each="item : ${film}" th:value="${item.id}">[[${item.name}]]</option>
+                    <label for="film">Chọn phim <span class="required text-danger">*</span></label>
+                    <select th:field="*{film}" class="form-control form-control-lg" id="film">
+                        <option value="">Chọn phim</option>
+                        <option th:each="item : ${films}" th:value="${item.id}">[[${item.name}]] - [[${item.time}]]
+                            phút
+                        </option>
                     </select>
+                    <span class="error text-danger" th:if="${#fields.hasErrors('film')}" th:errors="*{film}"></span>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
-                    <label>Chọn thời gian và giá <span class="required text-danger">*</span></label>
-                    <select name="time_price_id" class="form-control form-control-lg" id="time-price">
-                        <option>Chọn thời gian và giá</option>
-                        <option th:each="item : ${timePrice}" th:value="${item.id}">[[${item.time}]]-[[${item.price}]]</option>
+                    <label for="room">Chọn phòng chiếu <span class="required text-danger">*</span></label>
+                    <select th:field="*{room}" class="form-control form-control-lg" id="room">
+                        <option value="">Chọn phòng chiếu</option>
+                        <option th:each="item : ${rooms}" th:value="${item.id}">[[${item.roomNumber}]]</option>
                     </select>
+                    <span class="error text-danger" th:if="${#fields.hasErrors('room')}" th:errors="*{room}"></span>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
-                    <label>Chọn phòng chiếu <span class="required text-danger">*</span></label>
-                    <select name="room_id" class="form-control form-control-lg" id="room">
-                        <option>Chọn phòng chiếu</option>
+                    <label for="date">Chọn ngày chiếu <span class="required text-danger">*</span></label>
+                    <input type="date" th:field="*{date}"  class="form-control" id="date">
+                    <span class="error text-danger" th:if="${#fields.hasErrors('date')}"
+                          th:errors="*{date}"></span>
+                </div>
+                <div class="form-group form-material col-md-12 pr-30">
+                    <label for="time-price">Chọn thời gian và giá <span class="required text-danger">*</span></label>
+                    <select th:field="*{timePrice}" class="form-control form-control-lg" id="time-price">
+                        <option value="">Chọn thời gian và giá</option>
                     </select>
+                    <span class="error text-danger" th:if="${#fields.hasErrors('timePrice')}"
+                          th:errors="*{timePrice}"></span>
                 </div>
             </div>
             <div class="text-center">
@@ -33,23 +51,42 @@
 </section>
 </html>
 <script>
-    $( document ).ready(function() {
-        $('#time-price').change(function(){
-            console.log($(this).val());
-            $("#room").empty().append('<option>Chọn phòng chiếu</option>')
+    $(document).ready(function () {
+        $('[type="date"]').prop('min', function(){
+            return new Date().toJSON().split('T')[0];
+        });
+        function getTimePrice() {
+            $("#time-price").empty().append('<option value="">Chọn thời gian và giá</option>');
+            var room_id = $("#room").val();
+            var film_id = $("#film").val();
+            var date = $("#date").val();
             $.ajax({
-                url: "/rooms",
+                url: "/time-prices",
                 method: "GET",
                 data: {
-                    time_price_id:  $(this).val(),
+                    room_id: room_id,
+                    film_id: film_id,
+                    date: date,
                 }
-            }).done(function(res) {
-                console.log(res)
+            }).done(function (res) {
                 for (var i in res) {
                     var obj = res[i];
-                    $("#room").append("<option value=\"" + obj.id + "\">" + obj.roomNumber + "</option>");
+                    $("#time-price").append("<option value=\"" + obj.id + "\">" + obj.time[0] + ":" + obj.time[1] + "h    -" + obj.price + "</option>");
                 }
             });
+        }
+
+        getTimePrice();
+
+
+        $('#room').change(function () {
+            getTimePrice();
+        });
+        $('#date').change(function () {
+            getTimePrice();
+        });
+        $('#film').change(function () {
+            getTimePrice();
         })
     });
 </script>

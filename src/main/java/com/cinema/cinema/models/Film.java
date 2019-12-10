@@ -8,8 +8,9 @@ public class Film {
     public Film() {
     }
 
-    public Film(@NotNull String name) {
+    public Film(@NotNull String name, @NotEmpty int time) {
         this.name = name;
+        this.time = time;
     }
 
     @Id
@@ -21,12 +22,24 @@ public class Film {
     @NotNull
     private String name;
 
+    @Column(name = "time")
+    @NotEmpty
+    private int time;
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public String getName() {

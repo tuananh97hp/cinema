@@ -7,7 +7,9 @@ import javax.validation.constraints.*;
 @Table(name = "accounts")
 public class Account {
 
-    public Account(@NotEmpty String username, @NotEmpty String password) {
+    public Account() {}
+
+    public Account(String username,String password) {
         this.username = username;
         this.password = password;
     }
@@ -18,11 +20,9 @@ public class Account {
     private int id;
 
     @Column(name = "username")
-    @NotEmpty
     private String username;
 
     @Column(name = "password")
-    @NotEmpty
     private String password;
 
     public int getId() {

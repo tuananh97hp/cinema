@@ -3,6 +3,7 @@ package com.cinema.cinema.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Date;
 import java.util.Optional;
 
 @Entity
@@ -11,10 +12,11 @@ public class Showtime {
 
     public Showtime(){}
 
-    public Showtime(Room room, Film film, TimePrice timePrice) {
+    public Showtime(Room room, Film film, TimePrice timePrice, String date) {
         this.room = room;
         this.film = film;
         this.timePrice = timePrice;
+        this.date = date;
     }
 
     @Id
@@ -22,17 +24,24 @@ public class Showtime {
     @Column(name = "id")
     private int id;
 
+    @NotNull(message = "Bạn chưa chọn phóng chiếu")
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @NotNull(message = "Bạn chưa chọn phim")
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "film_id", referencedColumnName = "id")
     private Film film;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @NotNull(message = "Bạn chưa chọn thời gian và giá")
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "time_price_id", referencedColumnName = "id")
     private TimePrice timePrice;
+
+    @NotEmpty(message = "Bạn chưa chọn ngày chiếu")
+    @Column(name = "date",columnDefinition = "DATE")
+    private String date;
 
     public int getId() {
         return id;
@@ -64,5 +73,13 @@ public class Showtime {
 
     public void setTimePrice(TimePrice timePrice) {
         this.timePrice = timePrice;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

@@ -2,17 +2,22 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <section layout:fragment="content">
     <div class="container">
+        <div class="text-center">
+            <h2>Danh sách lịch chiếu</h2>
+        </div>
         <div class="banner text-right">
             <a href="/show-times/create" class="btn btn-outline-primary">Thêm Lịch chiếu</a>
         </div>
         <div class="row mt-3">
-            <table class="table table-hover">
+            <table class="table table-hover table-active">
                 <thead>
                 <tr class="table-dark">
                     <th scope="col">STT</th>
                     <th scope="col">Tên phim</th>
+                    <th scope="col">Thời gian phim</th>
                     <th scope="col">Phòng</th>
                     <th scope="col">Giờ chiếu</th>
+                    <th scope="col">ngày chiếu</th>
                     <th scope="col">Giá vé</th>
                 </tr>
                 </thead>
@@ -20,8 +25,10 @@
                 <tr th:each="item : ${showTimes}">
                     <th scope="row">[[${item.id}]]</th>
                     <td>[[${item.film.name}]]</td>
+                    <td>[[${item.film.time}]] phút</td>
                     <td>[[${item.room.roomNumber}]]</td>
                     <td>[[${item.timePrice.time}]]</td>
+                    <td>[[${item.date}]]</td>
                     <td>[[${item.timePrice.price}]]</td>
                 </tr>
                 </tbody>

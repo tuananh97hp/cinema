@@ -3,7 +3,6 @@ package com.cinema.cinema.controllers;
 import com.cinema.cinema.models.Film;
 import com.cinema.cinema.models.Room;
 import com.cinema.cinema.models.Showtime;
-import com.cinema.cinema.models.TimePrice;
 import com.cinema.cinema.repositories.FilmRepository;
 import com.cinema.cinema.repositories.RoomRepository;
 import com.cinema.cinema.repositories.ShowTimeRepository;
@@ -14,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -45,27 +42,23 @@ public class ShowtimesController {
     @GetMapping("/show-times/create")
     public String create(Model model) {
         List<Film> films = (List<Film>) filmRepository.findAll();
-        List<TimePrice> timePrices = (List<TimePrice>) timePriceRepository.findAll();
-        model.addAttribute("film", films);
-        model.addAttribute("timePrice", timePrices);
+        List<Room> rooms = (List<Room>) roomRepository.findAll();
+        model.addAttribute("films", films);
+        model.addAttribute("rooms", rooms);
+        model.addAttribute("showtime", new Showtime());
         return "fragments/show-time-create";
     }
 
-    @PostMapping("/show-times/store")
-    public String store(@RequestParam(name = "film_id", required = false, defaultValue = "0") String filmid,
-                        @RequestParam(name = "time_price_id", required = false, defaultValue = "0") String timepriceid,
-                        @RequestParam(name = "room_id", required = false, defaultValue = "0") String roomid, Model model) {
-        int film_id = Integer.parseInt(filmid);
-        int time_price_id = Integer.parseInt(timepriceid);
-        int room_id = Integer.parseInt(roomid);
-        if (film_id == 0 || time_price_id == 0 || room_id == 0) {
-            model.addAttribute("error", "chon cac gia tri");
+    @PostMapping("/show-times/create")
+    public String store(@Valid Showtime showtime, BindingResult result,  Model model) {
+        if (result.hasErrors()) {
+            List<Film> films = (List<Film>) filmRepository.findAll();
+            List<Room> rooms = (List<Room>) roomRepository.findAll();
+            model.addAttribute("films", films);
+            model.addAttribute("rooms", rooms);
             return "fragments/show-time-create";
         }
-        Film film = filmRepository.findById(film_id).get();
-        Room room = roomRepository.findById(room_id).get();
-        TimePrice timePrice = timePriceRepository.findById(time_price_id).get();
-        showTimeRepository.save(new Showtime(room, film, timePrice));
+        showTimeRepository.save(showtime);
         return "redirect:/show-times";
     }
 
