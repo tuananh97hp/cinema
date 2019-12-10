@@ -11,7 +11,7 @@
         <form action="/show-times/create" method="post" th:object="${showtime}">
             <div class="form-row mt-30">
                 <div class="form-group form-material col-md-12 pr-30">
-                    <label>Chọn Phim <span class="required text-danger">*</span></label>
+                    <label for="film">Chọn phim <span class="required text-danger">*</span></label>
                     <select th:field="*{film}" class="form-control form-control-lg" id="film">
                         <option value="">Chọn phim</option>
                         <option th:each="item : ${films}" th:value="${item.id}">[[${item.name}]] - [[${item.time}]]
@@ -21,7 +21,7 @@
                     <span class="error text-danger" th:if="${#fields.hasErrors('film')}" th:errors="*{film}"></span>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
-                    <label>Chọn phòng chiếu <span class="required text-danger">*</span></label>
+                    <label for="room">Chọn phòng chiếu <span class="required text-danger">*</span></label>
                     <select th:field="*{room}" class="form-control form-control-lg" id="room">
                         <option value="">Chọn phòng chiếu</option>
                         <option th:each="item : ${rooms}" th:value="${item.id}">[[${item.roomNumber}]]</option>
@@ -29,13 +29,13 @@
                     <span class="error text-danger" th:if="${#fields.hasErrors('room')}" th:errors="*{room}"></span>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
-                    <label>Chọn ngày chiếu <span class="required text-danger">*</span></label>
+                    <label for="date">Chọn ngày chiếu <span class="required text-danger">*</span></label>
                     <input type="date" th:field="*{date}"  class="form-control" id="date">
                     <span class="error text-danger" th:if="${#fields.hasErrors('date')}"
                           th:errors="*{date}"></span>
                 </div>
                 <div class="form-group form-material col-md-12 pr-30">
-                    <label>Chọn thời gian và giá <span class="required text-danger">*</span></label>
+                    <label for="time-price">Chọn thời gian và giá <span class="required text-danger">*</span></label>
                     <select th:field="*{timePrice}" class="form-control form-control-lg" id="time-price">
                         <option value="">Chọn thời gian và giá</option>
                     </select>
