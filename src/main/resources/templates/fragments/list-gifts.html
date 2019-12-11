@@ -18,26 +18,18 @@
                     <th>ID</th>
                     <th>Tên món quà</th>
                     <th>Số điểm</th>
-                    <th>Số lượng</th>
                     <th>Hành động</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="gift : ${gifts}">
-                    <form style="width: 100%" th:action="@{'/exchange-gift/' + ${memberCard.id} + '/' + ${gift.id}}" method="get" th:object="${order}">
-                        <th scope="row">[[${gift.id}]]</th>
-                        <td th:if="${gift.ticket}">[[${gift.ticket?.showtime?.film?.name}]]</td>
-                        <td th:if="${gift.food}">[[${gift.food.name}]]</td>
-                        <td>[[${gift.point}]]</td>
-                        <td>
-                            <button type="button" class="btn-decrease-quantity" th:attr="data-gift-id=${gift.id}">-</button>
-                            <input readonly type="number" th:id="'quantity-' + ${gift.id}" style="width: 30px" th:field="${order.quantity}">
-                            <button type="button" class="btn-increase-quantity" th:attr="data-gift-id=${gift.id}">+</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-outline-success btn-select-gift" th:attr="data-gift-id=${gift.id}" type="submit">Chọn quà</button>
-                        </td>
-                    </form>
+                    <th scope="row">[[${gift.id}]]</th>
+                    <td th:if="${gift.ticket}">[[${gift.ticket?.showtime?.film?.name}]]</td>
+                    <td th:if="${gift.food}">[[${gift.food.name}]]</td>
+                    <td>[[${gift.point}]]</td>
+                    <td>
+                        <a th:href="@{'/exchange-gift/' + ${memberCard.id} + '/' + ${gift.id}}" class="btn btn-outline-success">Đổi quà</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

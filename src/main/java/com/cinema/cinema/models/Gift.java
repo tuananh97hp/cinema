@@ -2,8 +2,7 @@ package com.cinema.cinema.models;
 
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "gifts")
@@ -33,9 +32,6 @@ public class Gift {
 
     @Column(name = "point", columnDefinition = "integer default 0")
     private int point;
-
-    @OneToMany(mappedBy = "gift", cascade = CascadeType.ALL)
-    private Set<Order> orders;
 
     public int getId() {
         return id;
