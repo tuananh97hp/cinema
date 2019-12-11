@@ -1,7 +1,9 @@
 package com.cinema.cinema.controllers;
 
 import com.cinema.cinema.models.Gift;
+import com.cinema.cinema.models.GiftBill;
 import com.cinema.cinema.models.MembershipCard;
+import com.cinema.cinema.repositories.GiftBillRepository;
 import com.cinema.cinema.repositories.GiftRepository;
 import com.cinema.cinema.repositories.MemberShipCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,8 +85,9 @@ public class GiftController {
     public String showGiftBill(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
                                @ModelAttribute(name = "giftFromPath") Gift gift,
                                Model model) {
-        model.addAttribute("gift", gift);
-        model.addAttribute("memberCard", membershipCard);
+        GiftBill giftBill = new GiftBill(gift, membershipCard);
+
+        model.addAttribute("giftBill", giftBill);
 
         return "fragments/gift-bill";
     }

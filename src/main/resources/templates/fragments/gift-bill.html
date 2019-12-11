@@ -3,7 +3,7 @@
 <section layout:fragment="content">
     <div class="container">
         <div class="row">
-            <table th:if="${gift}" class="table table-hover">
+            <table th:if="${giftBill.gift}" class="table table-hover">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -13,21 +13,21 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <th scope="row">[[${gift.id}]]</th>
-                    <td th:if="${gift.ticket}">[[${gift.ticket?.showtime?.film?.name}]]</td>
-                    <td th:if="${gift.food}">[[${gift.food.name}]]</td>
-                    <td>[[${gift.point}]]</td>
+                    <th scope="row">[[${giftBill.gift.id}]]</th>
+                    <td th:if="${giftBill.gift.ticket}">[[${giftBill.gift?.ticket?.showtime?.film?.name}]]</td>
+                    <td th:if="${giftBill.gift.food}">[[${giftBill.gift?.food.name}]]</td>
+                    <td>[[${giftBill.gift?.point}]]</td>
                 </tr>
                 </tbody>
             </table>
             <div>
-                <p class="text-warning">Số điểm còn lại sau khi đổi quà: [[${memberCard.point - gift.point}]]</p>
+                <p class="text-warning">Số điểm còn lại sau khi đổi quà: [[${giftBill.membershipCard.point - giftBill.gift.point}]]</p>
             </div>
             <div class="clearfix"></div>
             <div class="text-center" style="width: 100%;">
-                <form action="/bill-gift" method="post" style="display: inline-block">
-                    <input type="hidden" name="gift_id" th:value="${gift.id}">
-                    <input type="hidden" name="card_id" th:value="${memberCard.id}">
+                <form action="/bill-gift" method="post" style="display: inline-block" th:object="${giftBill}">
+                    <input type="hidden" th:field="${giftBill.membershipCard}">
+                    <input type="hidden" th:field="${giftBill.gift}">
                     <button type="submit" class="btn btn-outline-success">Xác nhận đổi quà</button>
                 </form>
             </div>
