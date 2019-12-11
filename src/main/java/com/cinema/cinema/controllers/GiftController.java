@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +24,8 @@ public class GiftController {
     @Autowired
     private GiftRepository giftRepository;
 
-    @GetMapping("")
-    public String showExchangeGiftView(@RequestParam(name = "card_id", required = false, defaultValue = "0") String cardId, Model model) {
+    @ModelAttribute
+    public MembershipCard getMembershipCard(@RequestParam(name = "card_id", required = false, defaultValue = "0") String cardId) {
         int parseCardId = 0;
         try {
             parseCardId = Integer.parseInt(cardId);
@@ -41,8 +38,13 @@ public class GiftController {
         if (optionalMembershipCard.isPresent()) {
             membershipCard = optionalMembershipCard.get();
         }
+
+        return membershipCard;
+    }
+
+    @GetMapping("")
+    public String showExchangeGiftView(@ModelAttribute("membershipCard") MembershipCard membershipCard, Model model) {
         model.addAttribute("memberCard", membershipCard);
-        model.addAttribute("cardId", parseCardId == 0 ? "" : cardId);
 
         return "fragments/exchange-gifts";
     }
