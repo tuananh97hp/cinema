@@ -35,14 +35,31 @@ public class GiftController {
     }
 
     @ModelAttribute(name = "giftsFromParam")
-    public List<Gift> getGiftFromParam(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
+    public List<Gift> getGiftsFromParam(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
                                        @RequestParam(name = "gift_search", required = false, defaultValue = "") String giftSearch) {
-
         return giftRepository.findGiftByFoodNameContainingAndPointIsLessThanOrTicketShowtimeFilmNameContainingAndPointIsLessThanOrderByPoint(
                 giftSearch,
                 membershipCard != null ? membershipCard.getPoint() : 0,
                 giftSearch,
                 membershipCard != null ? membershipCard.getPoint() : 0);
+    }
+
+    @ModelAttribute(name = "giftFromPath")
+    public Gift getGiftFromPath(@PathVariable(name = "giftId", required = false) String giftId) {
+        int parseGiftId = 0;
+        try {
+            parseGiftId = Integer.parseInt(giftId);
+        } catch (NumberFormatException e) {
+            System.out.println(e.toString());
+        }
+
+        Optional<Gift> optionalGift = giftRepository.findById(parseGiftId);
+        Gift gift = null;
+        if (optionalGift.isPresent()) {
+            gift = optionalGift.get();
+        }
+
+        return gift;
     }
 
     @GetMapping("")
@@ -63,35 +80,9 @@ public class GiftController {
     }
 
     @GetMapping("/{cartId}/{giftId}")
-    public String showGiftBill(@PathVariable("cartId") String cardId,
-                                    @PathVariable("giftId") String giftId,
-                                     Model model) {
-        int parseCardId = 0;
-        try {
-            parseCardId = Integer.parseInt(cardId);
-        } catch (NumberFormatException e) {
-            System.out.println(e.toString());
-        }
-
-        Optional<MembershipCard> optionalMembershipCard = memberShipCardRepository.findById(parseCardId);
-        MembershipCard membershipCard = null;
-        if (optionalMembershipCard.isPresent()) {
-            membershipCard = optionalMembershipCard.get();
-        }
-
-        int parseGiftId = 0;
-        try {
-            parseGiftId = Integer.parseInt(giftId);
-        } catch (NumberFormatException e) {
-            System.out.println(e.toString());
-        }
-
-        Optional<Gift> optionalGift = giftRepository.findById(parseGiftId);
-        Gift gift = null;
-        if (optionalGift.isPresent()) {
-            gift = optionalGift.get();
-        }
-
+    public String showGiftBill(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
+                               @ModelAttribute(name = "giftFromPath") Gift gift,
+                               Model model) {
         model.addAttribute("gift", gift);
         model.addAttribute("memberCard", membershipCard);
 
