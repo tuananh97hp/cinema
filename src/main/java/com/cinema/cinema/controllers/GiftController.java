@@ -3,7 +3,7 @@ package com.cinema.cinema.controllers;
 import com.cinema.cinema.models.Gift;
 import com.cinema.cinema.models.GiftBill;
 import com.cinema.cinema.models.MembershipCard;
-import com.cinema.cinema.repositories.GiftBillRepository;
+import com.cinema.cinema.models.Order;
 import com.cinema.cinema.repositories.GiftRepository;
 import com.cinema.cinema.repositories.MemberShipCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @Controller
 @Validated
@@ -38,7 +38,7 @@ public class GiftController {
 
     @ModelAttribute(name = "giftsFromParam")
     public List<Gift> getGiftsFromParam(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
-                                       @RequestParam(name = "gift_search", required = false, defaultValue = "") String giftSearch) {
+                                        @RequestParam(name = "gift_search", required = false, defaultValue = "") String giftSearch) {
         return giftRepository.findGiftByFoodNameContainingAndPointIsLessThanOrTicketShowtimeFilmNameContainingAndPointIsLessThanOrderByPoint(
                 giftSearch,
                 membershipCard != null ? membershipCard.getPoint() : 0,
@@ -75,6 +75,9 @@ public class GiftController {
     public String showSearchGiftView(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
                                      @ModelAttribute(name = "giftsFromParam") List<Gift> gifts,
                                      Model model) {
+        Order order = new Order();
+        order.setQuantity(1);
+        model.addAttribute("order", order);
         model.addAttribute("gifts", gifts);
         model.addAttribute("memberCard", membershipCard);
 
@@ -84,8 +87,17 @@ public class GiftController {
     @GetMapping("/{cartId}/{giftId}")
     public String showGiftBill(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
                                @ModelAttribute(name = "giftFromPath") Gift gift,
+                               Order order,
+                               HttpSession httpSession,
                                Model model) {
-        GiftBill giftBill = new GiftBill(gift, membershipCard);
+        order.setGift(gift);
+        order.setPoint(order.getQuantity() * gift.getPoint());
+
+        Set<Order> setOrders = new HashSet<>();
+        setOrders.add(order);
+        GiftBill giftBill = new GiftBill(setOrders, membershipCard);
+
+        httpSession.setAttribute("giftBill", giftBill);
 
         model.addAttribute("giftBill", giftBill);
 

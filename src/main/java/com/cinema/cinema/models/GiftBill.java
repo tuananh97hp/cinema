@@ -1,7 +1,7 @@
 package com.cinema.cinema.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,8 +11,8 @@ public class GiftBill {
     public GiftBill() {
     }
 
-    public GiftBill(Gift gift, MembershipCard membershipCard) {
-        this.gift = gift;
+    public GiftBill(Set<Order> orders, MembershipCard membershipCard) {
+        this.orders = orders;
         this.membershipCard = membershipCard;
     }
 
@@ -21,9 +21,8 @@ public class GiftBill {
     @Column(name = "id")
     private int id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "orders", joinColumns = @JoinColumn(name = "gift_bill_id"), inverseJoinColumns = @JoinColumn(name = "gift_id"))
-    private Gift gift;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "giftBill")
+    private Set<Order> orders = new HashSet<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "card_id", referencedColumnName = "id")
@@ -37,12 +36,12 @@ public class GiftBill {
         this.id = id;
     }
 
-    public Gift getGift() {
-        return gift;
+    public Set<Order> getOrders() {
+        return orders;
     }
 
-    public void setGift(Gift gift) {
-        this.gift = gift;
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     public MembershipCard getMembershipCard() {
@@ -51,5 +50,9 @@ public class GiftBill {
 
     public void setMembershipCard(MembershipCard membershipCard) {
         this.membershipCard = membershipCard;
+    }
+
+    public int getTotalPoint() {
+        return this.orders.stream().mapToInt(Order::getPoint).sum();
     }
 }

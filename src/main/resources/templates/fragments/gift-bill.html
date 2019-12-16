@@ -3,31 +3,31 @@
 <section layout:fragment="content">
     <div class="container">
         <div class="row">
-            <table th:if="${giftBill.gift}" class="table table-hover">
+            <table th:if="${giftBill.orders.size() > 0}" class="table table-hover">
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>Tên món quà</th>
+                    <th>Số lượng</th>
                     <th>Số điểm</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">[[${giftBill.gift.id}]]</th>
-                    <td th:if="${giftBill.gift.ticket}">[[${giftBill.gift?.ticket?.showtime?.film?.name}]]</td>
-                    <td th:if="${giftBill.gift.food}">[[${giftBill.gift?.food.name}]]</td>
-                    <td>[[${giftBill.gift?.point}]]</td>
+                <tr th:each="order : ${giftBill.orders}">
+                    <th scope="row">[[${order.gift.id}]]</th>
+                    <td th:if="${order.gift.ticket}">[[${order.gift?.ticket?.showtime?.film?.name}]]</td>
+                    <td th:if="${order.gift.food}">[[${order.gift?.food.name}]]</td>
+                    <td>[[${order.quantity}]]</td>
+                    <td>[[${order.point}]]</td>
                 </tr>
                 </tbody>
             </table>
             <div>
-                <p class="text-warning">Số điểm còn lại sau khi đổi quà: [[${giftBill.membershipCard.point - giftBill.gift.point}]]</p>
+                <p class="text-warning">Số điểm còn lại sau khi đổi quà: [[${giftBill.membershipCard.point - giftBill.getTotalPoint()}]]</p>
             </div>
             <div class="clearfix"></div>
             <div class="text-center" style="width: 100%;">
-                <form action="/bill-gift" method="post" style="display: inline-block" th:object="${giftBill}">
-                    <input type="hidden" th:field="${giftBill.membershipCard}">
-                    <input type="hidden" th:field="${giftBill.gift}">
+                <form action="/bill-gift" method="post" style="display: inline-block">
                     <button type="submit" class="btn btn-outline-success">Xác nhận đổi quà</button>
                 </form>
             </div>
