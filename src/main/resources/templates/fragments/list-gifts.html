@@ -24,14 +24,14 @@
                 </thead>
                 <tbody>
                 <tr th:each="gift : ${gifts}">
-                    <form style="width: 100%" th:action="@{'/exchange-gift/' + ${memberCard.id} + '/' + ${gift.id}}" method="get" th:object="${order}">
+                    <form style="width: 100%" th:action="@{'/exchange-gift/' + ${memberCard.id} + '/' + ${gift.id}}" method="get" th:object="${orderGift}">
                         <th scope="row">[[${gift.id}]]</th>
                         <td th:if="${gift.ticket}">[[${gift.ticket?.showtime?.film?.name}]]</td>
                         <td th:if="${gift.food}">[[${gift.food.name}]]</td>
                         <td>[[${gift.point}]]</td>
                         <td>
                             <button type="button" class="btn-decrease-quantity" th:attr="data-gift-id=${gift.id}">-</button>
-                            <input readonly type="number" th:id="'quantity-' + ${gift.id}" style="width: 30px" th:field="${order.quantity}">
+                            <input readonly type="number" th:id="'quantity-' + ${gift.id}" style="width: 30px" th:field="${orderGift.quantity}">
                             <button type="button" class="btn-increase-quantity" th:attr="data-gift-id=${gift.id}">+</button>
                         </td>
                         <td>

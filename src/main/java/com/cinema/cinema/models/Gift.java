@@ -1,10 +1,12 @@
 package com.cinema.cinema.models;
 
 
+import lombok.Data;
+
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "gifts")
 public class Gift {
@@ -34,8 +36,8 @@ public class Gift {
     @Column(name = "point", columnDefinition = "integer default 0")
     private int point;
 
-    @OneToMany(mappedBy = "gift", cascade = CascadeType.ALL)
-    private Set<Order> orders;
+    @OneToMany(mappedBy = "gift", cascade = CascadeType.MERGE)
+    private Set<OrderGift> orderGifts;
 
     public int getId() {
         return id;

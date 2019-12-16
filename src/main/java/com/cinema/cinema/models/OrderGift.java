@@ -1,20 +1,16 @@
 package com.cinema.cinema.models;
 
+import lombok.*;
+
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "orders")
-public class Order implements Serializable {
-    public Order() {
-    }
+@Getter
+@Setter
 
-    public Order(Gift gift, int quantity, int point) {
-        this.gift = gift;
-        this.quantity = quantity;
-        this.point = point;
-    }
+@Entity
+@Table(name = "order_gifts")
+public class OrderGift implements Serializable {
 
     @Id
     @ManyToOne
@@ -31,6 +27,15 @@ public class Order implements Serializable {
 
     @Column(name = "point")
     private int point;
+
+    public OrderGift() {
+    }
+
+    public OrderGift(Gift gift, int quantity, int point) {
+        this.gift = gift;
+        this.quantity = quantity;
+        this.point = point;
+    }
 
     public GiftBill getGiftBill() {
         return giftBill;

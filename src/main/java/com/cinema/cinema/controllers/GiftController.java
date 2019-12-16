@@ -3,7 +3,7 @@ package com.cinema.cinema.controllers;
 import com.cinema.cinema.models.Gift;
 import com.cinema.cinema.models.GiftBill;
 import com.cinema.cinema.models.MembershipCard;
-import com.cinema.cinema.models.Order;
+import com.cinema.cinema.models.OrderGift;
 import com.cinema.cinema.repositories.GiftRepository;
 import com.cinema.cinema.repositories.MemberShipCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,9 +75,9 @@ public class GiftController {
     public String showSearchGiftView(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
                                      @ModelAttribute(name = "giftsFromParam") List<Gift> gifts,
                                      Model model) {
-        Order order = new Order();
-        order.setQuantity(1);
-        model.addAttribute("order", order);
+        OrderGift orderGift = new OrderGift();
+        orderGift.setQuantity(1);
+        model.addAttribute("orderGift", orderGift);
         model.addAttribute("gifts", gifts);
         model.addAttribute("memberCard", membershipCard);
 
@@ -87,15 +87,15 @@ public class GiftController {
     @GetMapping("/{cartId}/{giftId}")
     public String showGiftBill(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
                                @ModelAttribute(name = "giftFromPath") Gift gift,
-                               Order order,
+                               OrderGift orderGift,
                                HttpSession httpSession,
                                Model model) {
-        order.setGift(gift);
-        order.setPoint(order.getQuantity() * gift.getPoint());
+        orderGift.setGift(gift);
+        orderGift.setPoint(orderGift.getQuantity() * gift.getPoint());
 
-        Set<Order> setOrders = new HashSet<>();
-        setOrders.add(order);
-        GiftBill giftBill = new GiftBill(setOrders, membershipCard);
+        Set<OrderGift> setOrderGifts = new HashSet<>();
+        setOrderGifts.add(orderGift);
+        GiftBill giftBill = new GiftBill(setOrderGifts, membershipCard);
 
         httpSession.setAttribute("giftBill", giftBill);
 

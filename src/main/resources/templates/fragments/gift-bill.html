@@ -3,7 +3,7 @@
 <section layout:fragment="content">
     <div class="container">
         <div class="row">
-            <table th:if="${giftBill.orders.size() > 0}" class="table table-hover">
+            <table th:if="${giftBill.orderGifts.size() > 0}" class="table table-hover">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -13,12 +13,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="order : ${giftBill.orders}">
-                    <th scope="row">[[${order.gift.id}]]</th>
-                    <td th:if="${order.gift.ticket}">[[${order.gift?.ticket?.showtime?.film?.name}]]</td>
-                    <td th:if="${order.gift.food}">[[${order.gift?.food.name}]]</td>
-                    <td>[[${order.quantity}]]</td>
-                    <td>[[${order.point}]]</td>
+                <tr th:each="orderGift : ${giftBill.orderGifts}">
+                    <th scope="row">[[${orderGift.gift.id}]]</th>
+                    <td th:if="${orderGift.gift.ticket}">[[${orderGift.gift?.ticket?.showtime?.film?.name}]]</td>
+                    <td th:if="${orderGift.gift.food}">[[${orderGift.gift?.food.name}]]</td>
+                    <td>[[${orderGift.quantity}]]</td>
+                    <td>[[${orderGift.point}]]</td>
                 </tr>
                 </tbody>
             </table>

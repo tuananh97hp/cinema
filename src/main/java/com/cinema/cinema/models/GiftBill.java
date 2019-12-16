@@ -1,9 +1,12 @@
 package com.cinema.cinema.models;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "gift_bills")
 public class GiftBill {
@@ -11,8 +14,8 @@ public class GiftBill {
     public GiftBill() {
     }
 
-    public GiftBill(Set<Order> orders, MembershipCard membershipCard) {
-        this.orders = orders;
+    public GiftBill(Set<OrderGift> orderGifts, MembershipCard membershipCard) {
+        this.orderGifts = orderGifts;
         this.membershipCard = membershipCard;
     }
 
@@ -22,7 +25,7 @@ public class GiftBill {
     private int id;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "giftBill")
-    private Set<Order> orders = new HashSet<>();
+    private Set<OrderGift> orderGifts;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "card_id", referencedColumnName = "id")
@@ -36,12 +39,12 @@ public class GiftBill {
         this.id = id;
     }
 
-    public Set<Order> getOrders() {
-        return orders;
+    public Set<OrderGift> getOrderGifts() {
+        return orderGifts;
     }
 
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
+    public void setOrderGifts(Set<OrderGift> orderGifts) {
+        this.orderGifts = orderGifts;
     }
 
     public MembershipCard getMembershipCard() {
@@ -53,6 +56,6 @@ public class GiftBill {
     }
 
     public int getTotalPoint() {
-        return this.orders.stream().mapToInt(Order::getPoint).sum();
+        return this.orderGifts.stream().mapToInt(OrderGift::getPoint).sum();
     }
 }
