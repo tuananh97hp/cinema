@@ -27,7 +27,7 @@ public class GiftBill {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "giftBill")
     private Set<OrderGift> orderGifts;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "card_id", referencedColumnName = "id")
     private MembershipCard membershipCard;
 

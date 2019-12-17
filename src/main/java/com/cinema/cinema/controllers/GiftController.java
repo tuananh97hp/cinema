@@ -97,6 +97,8 @@ public class GiftController {
         setOrderGifts.add(orderGift);
         GiftBill giftBill = new GiftBill(setOrderGifts, membershipCard);
 
+        orderGift.setGiftBill(giftBill);
+
         httpSession.setAttribute("giftBill", giftBill);
 
         model.addAttribute("giftBill", giftBill);
