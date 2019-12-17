@@ -59,7 +59,7 @@ public class ShowtimesController {
             return "fragments/show-time-create";
         }
         showTimeRepository.save(showtime);
-        return "redirect:/show-times";
+        return "fragments/show-time-done";
     }
 
 }
