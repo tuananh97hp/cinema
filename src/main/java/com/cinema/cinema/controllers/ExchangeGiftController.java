@@ -9,16 +9,20 @@ import com.cinema.cinema.repositories.MemberShipCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Controller
 @Validated
 @RequestMapping("/exchange-gift")
-public class GiftController {
+public class ExchangeGiftController {
 
     @Autowired
     private MemberShipCardRepository memberShipCardRepository;
@@ -28,12 +32,12 @@ public class GiftController {
 
     @ModelAttribute(name = "membershipCardFromParam")
     public MembershipCard getMembershipCard(@RequestParam(name = "card_id", required = false, defaultValue = "0") String cardId) {
-        return findMembershipCardByStringId(cardId);
+        return memberShipCardRepository.findByStringId(cardId);
     }
 
     @ModelAttribute(name = "membershipCardFromPath")
-    public MembershipCard getMembershipCardFromPath(@PathVariable(name = "cartId", required = false) String cardId) {
-        return findMembershipCardByStringId(cardId);
+    public MembershipCard getMembershipCardFromPath(@PathVariable(name = "card_id", required = false) String cardId) {
+        return memberShipCardRepository.findByStringId(cardId);
     }
 
     @ModelAttribute(name = "giftsFromParam")
@@ -47,7 +51,7 @@ public class GiftController {
     }
 
     @ModelAttribute(name = "giftFromPath")
-    public Gift getGiftFromPath(@PathVariable(name = "giftId", required = false) String giftId) {
+    public Gift getGiftFromPath(@PathVariable(name = "gift_id", required = false) String giftId) {
         int parseGiftId = 0;
         try {
             parseGiftId = Integer.parseInt(giftId);
@@ -71,7 +75,7 @@ public class GiftController {
         return "fragments/exchange-gifts";
     }
 
-    @GetMapping("/{cartId}")
+    @GetMapping("/{card_id}")
     public String showSearchGiftView(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
                                      @ModelAttribute(name = "giftsFromParam") List<Gift> gifts,
                                      Model model) {
@@ -84,12 +88,20 @@ public class GiftController {
         return "fragments/list-gifts";
     }
 
-    @GetMapping("/{cartId}/{giftId}")
+    @GetMapping("/{card_id}/{gift_id}")
     public String showGiftBill(@ModelAttribute(name = "membershipCardFromPath") MembershipCard membershipCard,
                                @ModelAttribute(name = "giftFromPath") Gift gift,
                                OrderGift orderGift,
+                               RedirectAttributes redirectAttributes,
                                HttpSession httpSession,
+                               HttpServletRequest httpServletRequest,
                                Model model) {
+        if ((orderGift.getQuantity() * gift.getPoint()) > membershipCard.getPoint()) {
+            redirectAttributes.addFlashAttribute("not_enough_point", "Thẻ không đủ điểm");
+            String referer = httpServletRequest.getHeader("Referer");
+            return "redirect:"+ referer;
+        }
+
         orderGift.setGift(gift);
         orderGift.setPoint(orderGift.getQuantity() * gift.getPoint());
 
@@ -106,20 +118,4 @@ public class GiftController {
         return "fragments/gift-bill";
     }
 
-    private MembershipCard findMembershipCardByStringId(String id) {
-        int parseCardId = 0;
-        try {
-            parseCardId = Integer.parseInt(id);
-        } catch (NumberFormatException e) {
-            System.out.println(e.toString());
-        }
-
-        Optional<MembershipCard> optionalMembershipCard = memberShipCardRepository.findById(parseCardId);
-        MembershipCard membershipCard = null;
-        if (optionalMembershipCard.isPresent()) {
-            membershipCard = optionalMembershipCard.get();
-        }
-
-        return membershipCard;
-    }
 }
