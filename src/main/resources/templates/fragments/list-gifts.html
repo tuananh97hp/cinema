@@ -5,10 +5,17 @@
         <div class="row mb-4">
             <form class="form-inline" th:action="@{'/exchange-gift/' + ${memberCard.id}}" method="get">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="gift_search" placeholder="Nhập tên món quà" th:value="${param.gift_search}">
+                    <input autofocus type="text" class="form-control" name="gift_search" placeholder="Nhập tên món quà" th:value="${param.gift_search}">
                 </div>
                 <button type="submit" class="btn btn-outline-primary ml-3">Tìm kiếm</button>
             </form>
+        </div>
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${not_enough_point}">
+            [[${not_enough_point}]]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
 
         <div class="row">
@@ -41,7 +48,9 @@
                 </tr>
                 </tbody>
             </table>
-            <p class="text-danger" th:if="${gifts.size() == 0}">Không tìm thấy món quà nào</p>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${gifts.size() == 0}">
+                Không tìm thấy món quà nào
+            </div>
         </div>
     </div>
 </section>

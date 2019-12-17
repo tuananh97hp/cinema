@@ -27,13 +27,18 @@
                     <td th:if="${memberCard.getCustomer()}">[[${memberCard.getCustomer().getName()}]]</td>
                     <td th:unless="${memberCard.getCustomer()}"></td>
                     <td>[[${memberCard.point}]]</td>
-                    <td>
+                    <td th:if="${memberCard.point > 0}">
                         <a th:href="@{'/exchange-gift/' + ${memberCard.id}}" class="btn btn-outline-success">Đổi quà</a>
+                    </td>
+                    <td th:unless="${memberCard.point > 0}">
+                        <button class="btn btn-outline-dark" disabled>Đổi quà</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <p class="text-danger" th:unless="${memberCard}">Không tìm thấy thẻ thành viên</p>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" th:unless="${memberCard}">
+                Không tìm thấy thẻ thành viên
+            </div>
         </div>
     </div>
 </section>
