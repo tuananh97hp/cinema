@@ -32,12 +32,12 @@ public class ExchangeGiftController {
 
     @ModelAttribute(name = "membershipCardFromParam")
     public MembershipCard getMembershipCard(@RequestParam(name = "card_id", required = false, defaultValue = "0") String cardId) {
-        return findMembershipCardByStringId(cardId);
+        return memberShipCardRepository.findByStringId(cardId);
     }
 
     @ModelAttribute(name = "membershipCardFromPath")
     public MembershipCard getMembershipCardFromPath(@PathVariable(name = "card_id", required = false) String cardId) {
-        return findMembershipCardByStringId(cardId);
+        return memberShipCardRepository.findByStringId(cardId);
     }
 
     @ModelAttribute(name = "giftsFromParam")
@@ -118,20 +118,4 @@ public class ExchangeGiftController {
         return "fragments/gift-bill";
     }
 
-    private MembershipCard findMembershipCardByStringId(String id) {
-        int parseCardId = 0;
-        try {
-            parseCardId = Integer.parseInt(id);
-        } catch (NumberFormatException e) {
-            System.out.println(e.toString());
-        }
-
-        Optional<MembershipCard> optionalMembershipCard = memberShipCardRepository.findById(parseCardId);
-        MembershipCard membershipCard = null;
-        if (optionalMembershipCard.isPresent()) {
-            membershipCard = optionalMembershipCard.get();
-        }
-
-        return membershipCard;
-    }
 }
