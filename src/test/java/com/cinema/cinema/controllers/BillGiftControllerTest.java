@@ -60,6 +60,7 @@ class BillGiftControllerTest {
     }
 
     @Test
+    @Transactional
     void addBillGift0901() throws Exception {
         MembershipCard membershipCard = memberShipCardRepository.findById(1).get();
         Gift gift = giftRepository.findById(1).get();
@@ -69,13 +70,10 @@ class BillGiftControllerTest {
         Set<OrderGift> setOrderGifts = new HashSet<>();
         setOrderGifts.add(orderGift);
         GiftBill giftBill = new GiftBill(setOrderGifts, membershipCard);
-
         orderGift.setGiftBill(giftBill);
 
-        HttpSession httpSession = Mockito.mock(HttpSession.class);
-        httpSession.setAttribute("giftBill", giftBill);
-
-        mvc.perform(MockMvcRequestBuilders.post("/bill-gift").contentType(MediaType.APPLICATION_FORM_URLENCODED))
+        mvc.perform(MockMvcRequestBuilders.post("/bill-gift").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .sessionAttr("giftBill", giftBill))
                 .andExpect(status().isOk())
                 .andExpect(view().name("fragments/exchange-gift-done"));
     }
