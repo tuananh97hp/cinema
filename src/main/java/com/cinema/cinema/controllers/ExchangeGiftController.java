@@ -104,17 +104,13 @@ public class ExchangeGiftController {
 
         orderGift.setGift(gift);
         orderGift.setPoint(orderGift.getQuantity() * gift.getPoint());
-
         membershipCard.setPoint(membershipCard.getPoint() - orderGift.getPoint());
-
         Set<OrderGift> setOrderGifts = new HashSet<>();
         setOrderGifts.add(orderGift);
         GiftBill giftBill = new GiftBill(setOrderGifts, membershipCard);
-
         orderGift.setGiftBill(giftBill);
 
         httpSession.setAttribute("giftBill", giftBill);
-
         model.addAttribute("giftBill", giftBill);
 
         return "fragments/gift-bill";

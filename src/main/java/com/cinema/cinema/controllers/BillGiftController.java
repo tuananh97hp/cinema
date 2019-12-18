@@ -24,9 +24,7 @@ public class BillGiftController {
     @PostMapping("")
     public String addBillGift(HttpSession httpSession) {
         GiftBill giftBill = (GiftBill) httpSession.getAttribute("giftBill");
-
         giftBillRepository.save(giftBill);
-
         memberShipCardRepository.save(giftBill.getMembershipCard());
 
         return "fragments/exchange-gift-done";
