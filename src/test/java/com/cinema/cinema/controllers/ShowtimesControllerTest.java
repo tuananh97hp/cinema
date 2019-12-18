@@ -1,38 +1,27 @@
 package com.cinema.cinema.controllers;
 
 import com.cinema.cinema.CinemaApplication;
-import com.cinema.cinema.models.Showtime;
 import com.cinema.cinema.repositories.FilmRepository;
 import com.cinema.cinema.repositories.RoomRepository;
 import com.cinema.cinema.repositories.ShowTimeRepository;
 import com.cinema.cinema.repositories.TimePriceRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JsonParseException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.View;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = CinemaApplication.class)
@@ -40,22 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ShowtimesControllerTest {
 
     protected MockMvc mvc;
+
     @Autowired
     private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private ShowTimeRepository showTimeRepository;
-
-    @Autowired
-    private RoomRepository roomRepository;
-
-    @Autowired
-    private FilmRepository filmRepository;
-
-    @Autowired
-    private TimePriceRepository timePriceRepository;
-
-
 
     @BeforeEach
     void setUp() {
@@ -69,47 +45,93 @@ class ShowtimesControllerTest {
 
     @Test
     @Transactional
-    void store() throws Exception {
+    void storeTestCase0401() throws Exception {
         String uri = "/show-times/create";
-        MvcResult mvcResult = mvc
-                .perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("film", "1")
-                        .param("room", "1")
-                        .param("timePrice", "1")
-                        .param("date", "2019-12-11")
-                )
-                .andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        String view = mvcResult.getModelAndView().getViewName();
-        assertEquals(200, status);
-        assertEquals("fragments/show-time-done", view);
+        mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("film", "1")
+                .param("room", "1")
+                .param("timePrice", "1")
+                .param("date", "2019-12-30"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("fragments/show-time-done"));
     }
 
     @Test
-    void storeValidate() throws Exception {
+    @Transactional
+    void storeTestCase0402() throws Exception {
         String uri = "/show-times/create";
-        MvcResult mvcResult = mvc
-                .perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andReturn();
+        mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("film", "1")
+                .param("room", "2")
+                .param("timePrice", "1")
+                .param("date", "2019-12-30"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("fragments/show-time-done"));
+    }
 
-        int status = mvcResult.getResponse().getStatus();
-        String view = mvcResult.getModelAndView().getViewName();
-        Object model = mvcResult.getModelAndView().getModel().get("org.springframework.validation.BindingResult.showtime");
-        int errorCount = ((BeanPropertyBindingResult) model).getErrorCount();
-        assertEquals(200, status);
-        assertEquals(4, errorCount);
-        assertEquals("fragments/show-time-create", view);
+    @Test
+    void storeTestCase0501() throws Exception {
+        String uri = "/show-times/create";
+        mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isOk())
+                .andExpect(view().name("fragments/show-time-create"))
+                .andExpect(model().attributeHasFieldErrorCode("showtime","film","NotNull"))
+                .andExpect(model().attributeHasFieldErrorCode("showtime","room","NotNull"))
+                .andExpect(model().attributeHasFieldErrorCode("showtime","timePrice","NotNull"))
+                .andExpect(model().attributeHasFieldErrorCode("showtime","date","NotEmpty"));
+    }
+
+    @Test
+    void storeTestCase0502() throws Exception {
+        String uri = "/show-times/create";
+        mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("room", "2")
+                .param("timePrice", "1")
+                .param("date", "2019-12-30"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("fragments/show-time-create"))
+                .andExpect(model().attributeHasFieldErrorCode("showtime","film","NotNull"));
+    }
+
+    @Test
+    void storeTestCase0503() throws Exception {
+        String uri = "/show-times/create";
+        mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("film", "1")
+                .param("timePrice", "1")
+                .param("date", "2019-12-30"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("fragments/show-time-create"))
+                .andExpect(model().attributeHasFieldErrorCode("showtime","room","NotNull"));
+    }
+    @Test
+    void storeTestCase0504() throws Exception {
+        String uri = "/show-times/create";
+        mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("film", "1")
+                .param("room", "2")
+                .param("date", "2019-12-30"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("fragments/show-time-create"))
+                .andExpect(model().attributeHasFieldErrorCode("showtime","timePrice","NotNull"));
+    }
+    @Test
+    void storeTestCase0505() throws Exception {
+        String uri = "/show-times/create";
+        mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("film", "1")
+                .param("room", "2")
+                .param("timePrice", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("fragments/show-time-create"))
+                .andExpect(model().attributeHasFieldErrorCode("showtime","date","NotEmpty"));
     }
 
     @Test
     void create() throws Exception {
         String uri = "/show-times/create";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        String view = mvcResult.getModelAndView().getViewName();
-        assertEquals(200, status);
-        assertEquals("fragments/show-time-create", view);
+        mvc.perform(MockMvcRequestBuilders.get(uri).contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(view().name("fragments/show-time-create"));
     }
 }
