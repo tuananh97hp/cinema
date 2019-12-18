@@ -27,9 +27,7 @@ public class BillGiftController {
 
         giftBillRepository.save(giftBill);
 
-        MembershipCard membershipCard = giftBill.getMembershipCard();
-        membershipCard.setPoint(membershipCard.getPoint() - giftBill.getTotalPoint());
-        memberShipCardRepository.save(membershipCard);
+        memberShipCardRepository.save(giftBill.getMembershipCard());
 
         return "fragments/exchange-gift-done";
     }

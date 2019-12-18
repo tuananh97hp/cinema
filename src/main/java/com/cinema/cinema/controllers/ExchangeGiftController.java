@@ -99,11 +99,13 @@ public class ExchangeGiftController {
         if ((orderGift.getQuantity() * gift.getPoint()) > membershipCard.getPoint()) {
             redirectAttributes.addFlashAttribute("not_enough_point", "Thẻ không đủ điểm");
             String referer = httpServletRequest.getHeader("Referer");
-            return "redirect:"+ referer;
+            return "redirect:" + referer;
         }
 
         orderGift.setGift(gift);
         orderGift.setPoint(orderGift.getQuantity() * gift.getPoint());
+
+        membershipCard.setPoint(membershipCard.getPoint() - orderGift.getPoint());
 
         Set<OrderGift> setOrderGifts = new HashSet<>();
         setOrderGifts.add(orderGift);
