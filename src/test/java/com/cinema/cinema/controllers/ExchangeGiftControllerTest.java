@@ -110,7 +110,7 @@ class ExchangeGiftControllerTest {
                         allOf(
                                 hasProperty("id", is(3)),
                                 hasProperty("point", is(300)),
-                                hasProperty("ticket", hasProperty("showtime", hasProperty("film", hasProperty("name", is("co giao thao")))))
+                                hasProperty("ticket", hasProperty("showtime", hasProperty("film", hasProperty("name", is("iron man")))))
                         )
                 )))
                 .andExpect(model().attribute("gifts", hasItem(
@@ -143,7 +143,7 @@ class ExchangeGiftControllerTest {
                         allOf(
                                 hasProperty("id", is(3)),
                                 hasProperty("point", is(300)),
-                                hasProperty("ticket", hasProperty("showtime", hasProperty("film", hasProperty("name", is("co giao thao")))))
+                                hasProperty("ticket", hasProperty("showtime", hasProperty("film", hasProperty("name", is("iron man")))))
                         )
                 )))
                 .andExpect(model().attribute("gifts", hasItem(
